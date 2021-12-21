@@ -17,15 +17,16 @@ class Value:
 class SnailNum:
     def __init__(self, values):
         self.values = values
+        self.tree = self.to_tree()
         
     def __repr__(self):
-        tree = self.to_tree()
+        #tree = self.to_tree()
         def step(node):
             if isinstance(node, list):
                 return "[{},{}]".format(step(node[0]), step(node[1]))
             else:
                 return str(node)
-        return step(tree)
+        return step(self.tree)
     
     def __add__(self, other):
         out = []
@@ -120,7 +121,15 @@ class SnailNum:
             else:
                 break
 
-        return curr               
+        return curr
+    
+    def magnitude(self):
+        def step(node):
+            if isinstance(node, list):
+                return 3 * step(node[0]) + 2 * step(node[1])
+            else:
+                return node
+        return step(self.tree)
            
     @classmethod
     def from_string(cls, s):
